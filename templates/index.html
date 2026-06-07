@@ -3,72 +3,120 @@
 
 <head>
 
-<title>Document Clustering System</title>
+    <title>Smart Document Clustering System</title>
 
-<style>
-
-body{
-font-family:Arial;
-text-align:center;
-background:#f4f6f9;
-}
-
-.card{
-display:inline-block;
-padding:30px;
-margin:20px;
-background:white;
-box-shadow:0 0 10px gray;
-width:250px;
-}
-
-a{
-text-decoration:none;
-}
-
-</style>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
 <body>
 
-<h1>Smart Document Clustering System</h1>
+    <h1>📄 Smart Document Clustering System</h1>
 
-<div class="card">
+    <div class="cards">
 
-<h2>Upload Document</h2>
+        <div class="card">
 
-<a href="/upload">
+            <h2>📤 Upload Document</h2>
 
-<button>Open</button>
+            <p>
+                Add new documents into the system.
+            </p>
 
-</a>
+            <a href="/upload">
 
-</div>
+                <button class="btn">
 
-<div class="card">
+                    Open
 
-<h2>View Documents</h2>
+                </button>
 
-<a href="/documents">
+            </a>
 
-<button>Open</button>
+        </div>
 
-</a>
+        <div class="card">
 
-</div>
+            <h2>📚 View Documents</h2>
 
-<div class="card">
+            <p>
+                View all uploaded documents.
+            </p>
 
-<h2>Admin Dashboard</h2>
+            <a href="/documents">
 
-<a href="/admin">
+                <button class="btn">
 
-<button>Open</button>
+                    Open
 
-</a>
+                </button>
 
-</div>
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <h2>🔍 Search Documents</h2>
+
+            <p>
+                Search documents by keyword.
+            </p>
+
+            <a href="/search">
+
+                <button class="btn">
+
+                    Open
+
+                </button>
+
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <h2>📂 Document Clusters</h2>
+
+            <p>
+                View document categories and clusters.
+            </p>
+
+            <a href="/clusters">
+
+                <button class="btn">
+
+                    Open
+
+                </button>
+
+            </a>
+
+        </div>
+
+        <div class="card">
+
+            <h2>👨‍💼 Admin Dashboard</h2>
+
+            <p>
+                View statistics and uploaded documents.
+            </p>
+
+            <a href="/admin">
+
+                <button class="btn">
+
+                    Open
+
+                </button>
+
+            </a>
+
+        </div>
+
+    </div>
 
 </body>
 
