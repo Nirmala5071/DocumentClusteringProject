@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>Admin Dashboard</title>
+
+</head>
+
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<h2>
+
+Total Documents :
+
+{{total_docs}}
+
+</h2>
+
+<table border="1">
+
+<tr>
+
+<th>ID</th>
+<th>Title</th>
+
+</tr>
+
+{% for d in documents %}
+
+<tr>
+
+<td>{{d.id}}</td>
+
+<td>{{d.title}}</td>
+
+</tr>
+
+{% endfor %}
+
+</table>
+
+</body>
+
+</html>
