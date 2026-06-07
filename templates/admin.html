@@ -3,45 +3,35 @@
 
 <head>
 
-<title>Admin Dashboard</title>
+    <title>Admin Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
 <body>
 
-<h1>Admin Dashboard</h1>
+    <h1>👨‍💼 Admin Dashboard</h1>
 
-<h2>
+    <div class="cards">
 
-Total Documents :
+        <div class="card">
 
-{{total_docs}}
+            <h2>📄 Total Documents</h2>
 
-</h2>
+            <h1>{{total_docs}}</h1>
 
-<table border="1">
+        </div>
 
-<tr>
+        <div class="card">
 
-<th>ID</th>
-<th>Title</th>
+            <h2>📂 Total Clusters</h2>
 
-</tr>
+            <h1>{{total_clusters}}</h1>
 
-{% for d in documents %}
+        </div>
 
-<tr>
+        <div class="card">
 
-<td>{{d.id}}</td>
-
-<td>{{d.title}}</td>
-
-</tr>
-
-{% endfor %}
-
-</table>
-
-</body>
-
-</html>
+            <
