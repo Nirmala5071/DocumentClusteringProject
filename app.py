@@ -1,111 +1,260 @@
 from flask import Flask, render_template, request, redirect
 import sqlite3
+from datetime import date
 
-app = Flask(__name__)
+app = Flask(**name**)
 
-# Database Connection
+# ==========================
+
+# DATABASE CONNECTION
+
+# ==========================
 
 def get_db():
 
-    conn = sqlite3.connect("document.db")
-    conn.row_factory = sqlite3.Row
+```
+conn = sqlite3.connect("document.db")
+conn.row_factory = sqlite3.Row
 
-    return conn
+return conn
+```
 
+# ==========================
 
-# Create Table
+# CREATE TABLE
+
+# ==========================
 
 conn = get_db()
 
 conn.execute("""
 CREATE TABLE IF NOT EXISTS documents(
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    title TEXT,
-    content TEXT
+id INTEGER PRIMARY KEY AUTOINCREMENT,
+title TEXT,
+topic TEXT,
+content TEXT,
+upload_date TEXT
 )
 """)
 
 conn.commit()
 
+# ==========================
+
+# HOME PAGE
+
+# ==========================
 
 @app.route('/')
 def home():
 
-    return render_template('index.html')
+```
+return render_template('index.html')
+```
 
+# ==========================
 
-@app.route('/upload', methods=['GET','POST'])
+# UPLOAD DOCUMENT
+
+# ==========================
+
+@app.route('/upload', methods=['GET', 'POST'])
 def upload():
 
-    if request.method == 'POST':
+```
+if request.method == 'POST':
 
-        title = request.form['title']
-        content = request.form['content']
+    title = request.form['title']
+    topic = request.form['topic']
+    content = request.form['content']
 
-        conn = get_db()
+    upload_date = str(date.today())
 
-        conn.execute(
-            """
-            INSERT INTO documents
-            (title,content)
-            VALUES (?,?)
-            """,
-            (title,content)
+    conn = get_db()
+
+    conn.execute(
+        """
+        INSERT INTO documents
+        (title,topic,content,upload_date)
+        VALUES (?,?,?,?)
+        """,
+        (
+            title,
+            topic,
+            content,
+            upload_date
         )
+    )
 
-        conn.commit()
+    conn.commit()
 
-        return redirect('/documents')
+    return redirect('/documents')
 
-    return render_template('upload.html')
+return render_template('upload.html')
+```
 
+# ==========================
+
+# VIEW DOCUMENTS
+
+# ==========================
 
 @app.route('/documents')
 def documents():
 
+```
+conn = get_db()
+
+docs = conn.execute(
+    """
+    SELECT *
+    FROM documents
+    ORDER BY id DESC
+    """
+).fetchall()
+
+return render_template(
+    'documents.html',
+    documents=docs
+)
+```
+
+# ==========================
+
+# SEARCH DOCUMENTS
+
+# ==========================
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+
+```
+results = []
+
+if request.method == 'POST':
+
+    keyword = request.form['keyword']
+
     conn = get_db()
 
-    docs = conn.execute(
+    results = conn.execute(
         """
         SELECT *
         FROM documents
-        ORDER BY id DESC
-        """
+        WHERE title LIKE ?
+        OR topic LIKE ?
+        OR content LIKE ?
+        """,
+        (
+            '%' + keyword + '%',
+            '%' + keyword + '%',
+            '%' + keyword + '%'
+        )
     ).fetchall()
 
-    return render_template(
-        'documents.html',
-        documents=docs
-    )
+return render_template(
+    'search.html',
+    results=results
+)
+```
 
+# ==========================
+
+# DOCUMENT CLUSTERS
+
+# ==========================
+
+@app.route('/clusters')
+def clusters():
+
+```
+conn = get_db()
+
+topics = conn.execute(
+    """
+    SELECT DISTINCT topic
+    FROM documents
+    """
+).fetchall()
+
+return render_template(
+    'clusters.html',
+    topics=topics
+)
+```
+
+# ==========================
+
+# ADMIN DASHBOARD
+
+# ==========================
 
 @app.route('/admin')
 def admin():
 
-    conn = get_db()
+```
+conn = get_db()
 
-    total_docs = conn.execute(
-        """
-        SELECT COUNT(*)
-        FROM documents
-        """
-    ).fetchone()[0]
+total_docs = conn.execute(
+    """
+    SELECT COUNT(*)
+    FROM documents
+    """
+).fetchone()[0]
 
-    docs = conn.execute(
-        """
-        SELECT *
-        FROM documents
-        ORDER BY id DESC
-        """
-    ).fetchall()
+total_clusters = conn.execute(
+    """
+    SELECT COUNT(DISTINCT topic)
+    FROM documents
+    """
+).fetchone()[0]
 
-    return render_template(
-        'admin.html',
-        total_docs=total_docs,
-        documents=docs
-    )
+common_topic = conn.execute(
+    """
+    SELECT topic,
+           COUNT(*) total
+    FROM documents
+    GROUP BY topic
+    ORDER BY total DESC
+    LIMIT 1
+    """
+).fetchone()
 
+recent_uploads = conn.execute(
+    """
+    SELECT COUNT(*)
+    FROM documents
+    WHERE upload_date = ?
+    """,
+    (str(date.today()),)
+).fetchone()[0]
 
-if __name__ == '__main__':
+docs = conn.execute(
+    """
+    SELECT *
+    FROM documents
+    ORDER BY id DESC
+    """
+).fetchall()
 
-    app.run(debug=True)
+return render_template(
+    'admin.html',
+    total_docs=total_docs,
+    total_clusters=total_clusters,
+    common_topic=common_topic,
+    recent_uploads=recent_uploads,
+    documents=docs
+)
+```
+
+# ==========================
+
+# RUN APP
+
+# ==========================
+
+if **name** == '**main**':
+
+```
+app.run(debug=True)
+```
