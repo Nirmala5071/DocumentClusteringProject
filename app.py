@@ -2,12 +2,16 @@ from flask import Flask, render_template, request, redirect
 import sqlite3
 from datetime import date
 
-app = Flask(_name_)
+app = Flask(**name**)
+
+# Database Connection
 
 def get_db():
-    conn = sqlite3.connect("document.db")
-    conn.row_factory = sqlite3.Row
-    return conn
+conn = sqlite3.connect("document.db")
+conn.row_factory = sqlite3.Row
+return conn
+
+# Create Table
 
 conn = get_db()
 
@@ -23,9 +27,13 @@ upload_date TEXT
 
 conn.commit()
 
+# Home Page
+
 @app.route('/')
 def home():
 return render_template('index.html')
+
+# Upload Document
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -60,6 +68,8 @@ if request.method == 'POST':
 return render_template('upload.html')
 ```
 
+# View Documents
+
 @app.route('/documents')
 def documents():
 
@@ -79,6 +89,8 @@ return render_template(
     documents=docs
 )
 ```
+
+# Search Documents
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -113,6 +125,8 @@ return render_template(
 )
 ```
 
+# Document Clusters
+
 @app.route('/clusters')
 def clusters():
 
@@ -132,6 +146,8 @@ return render_template(
 )
 ```
 
+# Admin Dashboard
+
 @app.route('/admin')
 def admin():
 
@@ -148,7 +164,7 @@ total_clusters = conn.execute(
 
 common_topic = conn.execute(
     """
-    SELECT topic, COUNT(*) total
+    SELECT topic, COUNT(*) AS total
     FROM documents
     GROUP BY topic
     ORDER BY total DESC
@@ -183,5 +199,5 @@ return render_template(
 )
 ```
 
-if _name_ == '_main_':
+if **name** == '**main**':
 app.run(debug=True)
