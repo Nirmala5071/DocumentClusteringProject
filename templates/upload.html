@@ -3,41 +3,77 @@
 
 <head>
 
-<title>Upload Document</title>
+    <title>Upload Document</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
 <body>
 
-<h1>Upload Document</h1>
+    <h1>📤 Upload Document</h1>
 
-<form method="POST">
+    <form method="POST">
 
-<input
-type="text"
-name="title"
-placeholder="Document Title"
-required>
+        <label>
+            Document Title
+        </label>
 
-<br><br>
+        <input
+            type="text"
+            name="title"
+            placeholder="Enter Document Title"
+            required>
 
-<textarea
-name="content"
-rows="10"
-cols="50"
-placeholder="Enter document content"
-required>
-</textarea>
+        <br><br>
 
-<br><br>
+        <label>
+            Document Topic
+        </label>
 
-<button type="submit">
+        <input
+            type="text"
+            name="topic"
+            placeholder="AI / Sports / Programming"
+            required>
 
-Upload
+        <br><br>
 
-</button>
+        <label>
+            Document Content
+        </label>
 
-</form>
+        <textarea
+            name="content"
+            rows="10"
+            placeholder="Enter document content"
+            required>
+        </textarea>
+
+        <br><br>
+
+        <button
+            type="submit"
+            class="btn">
+
+            Upload Document
+
+        </button>
+
+    </form>
+
+    <br>
+
+    <a href="/">
+
+        <button class="btn">
+
+            Back To Home
+
+        </button>
+
+    </a>
 
 </body>
 
