@@ -4,26 +4,10 @@ from datetime import date
 
 app = Flask(**name**)
 
-# ==========================
-
-# DATABASE CONNECTION
-
-# ==========================
-
 def get_db():
-
-```
 conn = sqlite3.connect("document.db")
 conn.row_factory = sqlite3.Row
-
 return conn
-```
-
-# ==========================
-
-# CREATE TABLE
-
-# ==========================
 
 conn = get_db()
 
@@ -39,24 +23,9 @@ upload_date TEXT
 
 conn.commit()
 
-# ==========================
-
-# HOME PAGE
-
-# ==========================
-
 @app.route('/')
 def home():
-
-```
 return render_template('index.html')
-```
-
-# ==========================
-
-# UPLOAD DOCUMENT
-
-# ==========================
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
@@ -68,21 +37,19 @@ if request.method == 'POST':
     topic = request.form['topic']
     content = request.form['content']
 
-    upload_date = str(date.today())
-
     conn = get_db()
 
     conn.execute(
         """
         INSERT INTO documents
-        (title,topic,content,upload_date)
-        VALUES (?,?,?,?)
+        (title, topic, content, upload_date)
+        VALUES (?, ?, ?, ?)
         """,
         (
             title,
             topic,
             content,
-            upload_date
+            str(date.today())
         )
     )
 
@@ -92,12 +59,6 @@ if request.method == 'POST':
 
 return render_template('upload.html')
 ```
-
-# ==========================
-
-# VIEW DOCUMENTS
-
-# ==========================
 
 @app.route('/documents')
 def documents():
@@ -118,12 +79,6 @@ return render_template(
     documents=docs
 )
 ```
-
-# ==========================
-
-# SEARCH DOCUMENTS
-
-# ==========================
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
@@ -158,12 +113,6 @@ return render_template(
 )
 ```
 
-# ==========================
-
-# DOCUMENT CLUSTERS
-
-# ==========================
-
 @app.route('/clusters')
 def clusters():
 
@@ -183,12 +132,6 @@ return render_template(
 )
 ```
 
-# ==========================
-
-# ADMIN DASHBOARD
-
-# ==========================
-
 @app.route('/admin')
 def admin():
 
@@ -196,23 +139,16 @@ def admin():
 conn = get_db()
 
 total_docs = conn.execute(
-    """
-    SELECT COUNT(*)
-    FROM documents
-    """
+    "SELECT COUNT(*) FROM documents"
 ).fetchone()[0]
 
 total_clusters = conn.execute(
-    """
-    SELECT COUNT(DISTINCT topic)
-    FROM documents
-    """
+    "SELECT COUNT(DISTINCT topic) FROM documents"
 ).fetchone()[0]
 
 common_topic = conn.execute(
     """
-    SELECT topic,
-           COUNT(*) total
+    SELECT topic, COUNT(*) total
     FROM documents
     GROUP BY topic
     ORDER BY total DESC
@@ -247,14 +183,5 @@ return render_template(
 )
 ```
 
-# ==========================
-
-# RUN APP
-
-# ==========================
-
 if **name** == '**main**':
-
-```
 app.run(debug=True)
-```
