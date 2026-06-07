@@ -5,9 +5,9 @@ from datetime import date
 app = Flask(_name_)
 
 def get_db():
-conn = sqlite3.connect("document.db")
-conn.row_factory = sqlite3.Row
-return conn
+    conn = sqlite3.connect("document.db")
+    conn.row_factory = sqlite3.Row
+    return conn
 
 conn = get_db()
 
