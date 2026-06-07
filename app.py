@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect
 import sqlite3
 from datetime import date
 
-app = Flask(**name**)
+app = Flask(_name_)
 
 def get_db():
 conn = sqlite3.connect("document.db")
@@ -183,5 +183,5 @@ return render_template(
 )
 ```
 
-if **name** == '**main**':
+if _name_ == '_main_':
 app.run(debug=True)
